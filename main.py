@@ -1,6 +1,9 @@
 import pyodbc
 from datetime import date
 from tabulate import tabulate
+from DAO.customer_service import CustomerService
+from DAO.order_service import OrderService
+from DAO.product_service import ProductService
 
 server_name = "TIGGER\\SQLEXPRESS"
 database_name = "Ecom_application"
@@ -15,13 +18,9 @@ conn_str = (
 
 print(conn_str)
 conn = pyodbc.connect(conn_str)
-cursor = conn.cursor()
-cursor.execute("Select 1")
-print("Database connection is successful")
-
-#############################################################################################
-
-# CUSTOMER TABLE
+# cursor = conn.cursor()
+# cursor.execute("Select 1")
+# print("Database connection is successful")
 
 class CustomerNotFoundException(Exception):
     def __init__(self, customer_id):
@@ -31,90 +30,8 @@ class ProductNotFoundException(Exception):
     def __init__(self, customer_id):
        print(f"Customer with ID {customer_id} not found")
 
-class Customer():
-    def display_customer(self):
-        cursor.execute("Select * from Customer")
-        cust = cursor.fetchall() # Get all data
-        headers = [column [0] for column in cursor.description]
-        print(tabulate (cust, headers=headers, tablefmt="psql"))
-
-    def create_customer(self,customer_name,customer_email,customer_password):
-        cursor.execute(
-            """INSERT INTO customer (name, email, password) VALUES ( ?, ?, ?)
-            declare @a int = (select max(customer_id) from customer)
-            insert into cart (customer_id)
-            values (@a)   """,
-            (customer_name,customer_email,customer_password)
-        )
-        conn.commit()  
-
-    def delete_customer(customer_id):
-        
-        rows_deleted = cursor.execute(
-            """declare @a int = ?;
-                    delete from Order_items
-                    where order_id= (select order_id
-                                    from orders
-                                    where customer_id=@a)
-                    delete from orders
-                    where customer_id=@a
-
-                    delete from Cart_items
-                    where cart_id = (select cart_id
-                                    from Cart
-                                    where customer_id=@a)
-
-                    delete from Cart
-                    where customer_id=@a
-
-                    delete from customer
-                    where customer_id= @a
-            """,
-            (customer_id)
-        ).rowcount
-        conn.commit()
-        try: 
-            if rows_deleted == 0:
-                raise CustomerNotFoundException(customer_id)
-        except CustomerNotFoundException as e:
-            print(e)
 
 
-
-
-
-# PRODUCT TABLE
-class Product:
-    def display_product(self):
-        cursor.execute("Select * from Product")
-        product = cursor.fetchall() # Get all data
-        headers = [column [0] for column in cursor.description]
-        print(tabulate (product, headers=headers, tablefmt="psql"))
-
-    def createProduct(self,name,price,description,stock_quantity):
-        cursor.execute( "insert into Product ( name, price, description, stock_quantity) values(?,?,?,?)",
-                       (name,price,description,stock_quantity))
-        conn.commit()
-
-    def delete_product(self,product_id):
-        rows_deleted = cursor.execute("""
-        delete from Order_items where product_id=?
-        delete from Cart_items where product_id=?
-        delete from Product where product_id=?
-        """,
-        (product_id,product_id,product_id)
-        ).rowcount
-        conn.commit()
-        try: 
-            if rows_deleted == 0:
-                raise ProductNotFoundException(product_id)
-        except ProductNotFoundException as e:
-            print(e)
-    
-  
-#############################################################################################
-
-# CART TABLE
 
 class Cart:
     def display_cart(self):
@@ -169,64 +86,15 @@ class Cart:
 
  # ORDER TABLE
 
-class Order:
-    def placeOrder(self,customer_id, pq_list, shippingAddress):
-        today_date=str(date.today())
-        cursor.execute(
-        """
-        insert into orders (customer_id,order_date,shipping_address)
-        values (?,?,?)""",
-        (customer_id,today_date,shippingAddress)
-        
-        )
-        conn.commit()
-    
-        for i,j in pq_list.items():
-            cursor.execute("""
-            insert into Order_items (order_id,product_id,quantity)
-            values ((select max(order_id) from orders), ?,?)""",
-            (i,j)
-            
-            )
-            conn.commit()
-
-        cursor.execute("""
-        update orders 
-        set total_price=(select sum(price*quantity) from Product
-        inner join Order_items on
-        Product.product_id=Order_items.product_id 
-        where order_id= (select max(order_id) from orders))
-        where order_id=(select max(order_id) from orders)
-        select * from orders    
-            """        
-        )
-        conn.commit()
-        print("Your order has been placed")
-
-
-    def getOrdersByCustomer(self,customer_id):
-        cursor.execute(
-            """
-        select oi.product_id,p.name,oi.quantity from orders o inner join
-        Order_items oi on o.order_id=oi.order_id inner join
-        Product p on p.product_id=oi.product_id
-        where o.customer_id= ? """,
-            (customer_id)
-        )
-        order = cursor.fetchall() # Get all data
-        headers = [column [0] for column in cursor.description]
-        print(tabulate (order, headers=headers, tablefmt="psql"))
-        
-
 
 
 
 if __name__=='__main__':
    
-    customer_access=Customer()
+    customer_access=CustomerService(conn)
     cart_access=Cart()
-    order_access=Order()
-    product_access=Product()
+    order_access=OrderService(conn)
+    product_access=ProductService(conn)
 
     while True:
         print("""
@@ -296,5 +164,5 @@ if __name__=='__main__':
 
 
 
-cursor.close()
-conn.close()
+# cursor.close()
+# conn.close()
