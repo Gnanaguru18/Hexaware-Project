@@ -4,6 +4,7 @@ from tabulate import tabulate
 from DAO.customer_service import CustomerService
 from DAO.order_service import OrderService
 from DAO.product_service import ProductService
+from DAO.cart_service import CartService
 
 server_name = "TIGGER\\SQLEXPRESS"
 database_name = "Ecom_application"
@@ -92,7 +93,7 @@ class Cart:
 if __name__=='__main__':
    
     customer_access=CustomerService(conn)
-    cart_access=Cart()
+    cart_access=CartService()
     order_access=OrderService(conn)
     product_access=ProductService(conn)
 
