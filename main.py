@@ -1,77 +1,7 @@
 import pyodbc
 from datetime import date
 from tabulate import tabulate
-from DAO.customer_service import CustomerService
-from DAO.order_service import OrderService
-from DAO.product_service import ProductService
-from DAO.cart_service import CartService
-
-
-class CustomerNotFoundException(Exception):
-    def __init__(self, customer_id):
-       print(f"Customer with ID {customer_id} not found")
-
-class ProductNotFoundException(Exception):
-    def __init__(self, customer_id):
-       print(f"Customer with ID {customer_id} not found")
-
-
-
-
-class Cart:
-    def display_cart(self):
-        cursor.execute("Select * from Cart_items")
-        cart = cursor.fetchall() # Get all data
-        headers = [column [0] for column in cursor.description]
-        print(tabulate (cart, headers=headers, tablefmt="psql"))
-        
-
-    def add_to_cart(self,customer_id,prod_id,quantity):
-        cursor.execute(
-            """
-            declare @a int = (select cart_id from Cart
-					    where customer_id= ?);
-
-            insert into Cart_items (cart_id,product_id,quantity)
-            values ( @a , ? , ?)
-            """,
-            (customer_id,prod_id,quantity)
-        )
-        conn.commit()
-
- 
-    def remove_from_cart(self,customer_id,prod_id):
-        cursor.execute(
-            """
-            declare @a int = (select cart_id from Cart
-					where customer_id= ?);
-
-            delete from Cart_items
-            where cart_id= @a and product_id = ?
-           
-            """,
-            (customer_id,prod_id)
-        )
-        conn.commit()
-
-    def getAllFromCart(self,customer_id):
-        cursor.execute(
-            """
-        select c.customer_id,p.product_id,(p.name) as Product_name,ci.quantity from Cart c inner join
-        Cart_items ci on c.cart_id=ci.cart_id
-        join Product p on ci.product_id=p.product_id
-        where c.customer_id= ?  """,
-        (customer_id)
-        )
-        cart = cursor.fetchall() # Get all data
-        headers = [column [0] for column in cursor.description]
-        print(tabulate (cart, headers=headers, tablefmt="psql"))
-
- ###########################################################################################
-
- # ORDER TABLE
-
-
+from DAO import CustomerService,OrderService,CartService,ProductService
 
 
 if __name__=='__main__':
@@ -147,12 +77,3 @@ if __name__=='__main__':
         else:
             print("Wrong choice ❌")
 
-
-
-
-
-
-
-
-# cursor.close()
-# conn.close()
