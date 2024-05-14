@@ -61,6 +61,6 @@ class CustomerService(DBconnection):
             if rows_deleted == 0:
                 raise CustomerNotFoundException(customer_id)
         except CustomerNotFoundException as e:
-            print(e)
+            pass
 
 

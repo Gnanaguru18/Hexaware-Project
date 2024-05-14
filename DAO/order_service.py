@@ -1,6 +1,10 @@
 from tabulate import tabulate
 from datetime import date
 from Utility.DBconn import DBconnection
+
+class CustomerNotFoundException(Exception):
+    def __init__(self, customer_id):
+       print(f"Customer with ID {customer_id} not found")
 class OrderService(DBconnection):
 
     def placeOrder(self,customer_id, pq_list, shippingAddress):
@@ -50,10 +54,13 @@ class OrderService(DBconnection):
             where o.customer_id= ? """,
                 (customer_id)
             )
-            order = self.cursor.fetchall() # Get all data
+            order = self.cursor.fetchall() 
+            if not order:
+                raise CustomerNotFoundException(customer_id)
+            
             headers = [column [0] for column in self.cursor.description]
             print(tabulate (order, headers=headers, tablefmt="psql"))
         
-        except Exception as e:
-            print(e)  
+        except CustomerNotFoundException as e:
+            pass  
      
