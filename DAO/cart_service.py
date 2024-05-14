@@ -6,7 +6,7 @@ class CartService(DBconnection):
         try:
             self.cursor.execute("Select * from Cart_items")
             cart = self.cursor.fetchall() 
-            headers = [column [0] for column in cursor.description]
+            headers = [column [0] for column in self.cursor.description]
             print(tabulate (cart, headers=headers, tablefmt="psql"))
         except Exception as e:
            print(e)
