@@ -1,14 +1,11 @@
 from tabulate import tabulate
-
+from Utility.DBconn import DBconnection
 class ProductNotFoundException(Exception):
     def __init__(self, customer_id):
        print(f"Customer with ID {customer_id} not found")
 
 
-class ProductService:
-    def __init__(self,conn):
-        self.conn=conn
-        self.cursor=conn.cursor()
+class ProductService(DBconnection):
 
     def display_product(self):
         try:
@@ -18,9 +15,7 @@ class ProductService:
            print(tabulate (product, headers=headers, tablefmt="psql"))
         except Exception as e:
            print(e)
-        finally:
-           self.cursor.close()
-           self.conn.close()
+  
          
 
     def createProduct(self,name,price,description,stock_quantity):
@@ -30,9 +25,7 @@ class ProductService:
            self.conn.commit()
         except Exception as e:
            print(e)
-        finally:
-           self.cursor.close()
-           self.conn.close()
+      
 
     def delete_product(self,product_id):
         
@@ -49,6 +42,4 @@ class ProductService:
                 raise ProductNotFoundException(product_id)
         except ProductNotFoundException as e:
             print(e)
-        finally:
-           self.cursor.close()
-           self.conn.close()
+       

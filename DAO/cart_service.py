@@ -1,15 +1,6 @@
 from tabulate import tabulate
-
-class CartService:
-
-    def __init__(self,conn):
-        self.conn=conn
-        self.cursor=conn.cursor()
-
-   
-    def close(self):
-        self.cursor.close()
-        self.conn.close() 
+from Utility.DBconn import DBconnection
+class CartService(DBconnection):
 
     def display_cart(self):
         try:
@@ -19,9 +10,7 @@ class CartService:
             print(tabulate (cart, headers=headers, tablefmt="psql"))
         except Exception as e:
            print(e)
-        finally:
-           self.close()
-        
+       
 
     def add_to_cart(self,customer_id,prod_id,quantity):
         try:
@@ -38,9 +27,7 @@ class CartService:
             self.conn.commit()
         except Exception as e:
            print(e)
-        finally:
-           self.close()
-
+    
  
     def remove_from_cart(self,customer_id,prod_id):
         try:
@@ -58,8 +45,7 @@ class CartService:
             self.conn.commit()
         except Exception as e:
            print(e)
-        finally:
-           self.close()
+
 
     def getAllFromCart(self,customer_id):
         try:
@@ -76,7 +62,5 @@ class CartService:
             print(tabulate (cart, headers=headers, tablefmt="psql"))
         except Exception as e:
            print(e)
-        finally:
-           self.close()
-
+  
        

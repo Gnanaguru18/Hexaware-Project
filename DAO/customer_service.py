@@ -1,15 +1,12 @@
 from tabulate import tabulate
-
+from Utility.DBconn import DBconnection
 
 class CustomerNotFoundException(Exception):
     def __init__(self, customer_id):
        print(f"Customer with ID {customer_id} not found")
 
 
-class CustomerService():
-    def __init__(self,conn) :
-        self.conn=conn
-        self.cursor=conn.cursor()
+class CustomerService(DBconnection):
 
     def display_customer(self):
         try:
@@ -19,8 +16,7 @@ class CustomerService():
             print(tabulate (cust, headers=headers, tablefmt="psql"))
         except Exception as e:
             print(e)
-        finally:
-            self.close()
+
 
     def create_customer(self,customer_name,customer_email,customer_password):
         try:
@@ -34,8 +30,7 @@ class CustomerService():
             self.conn.commit()  
         except Exception as e:
             print(e)
-        finally:
-            self.close()
+  
             
 
     def delete_customer(self,customer_id):
@@ -68,7 +63,4 @@ class CustomerService():
         except CustomerNotFoundException as e:
             print(e)
 
-    def close(self):
-        self.cursor.close()
-        self.conn.close()
-        
+

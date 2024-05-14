@@ -6,22 +6,6 @@ from DAO.order_service import OrderService
 from DAO.product_service import ProductService
 from DAO.cart_service import CartService
 
-server_name = "TIGGER\\SQLEXPRESS"
-database_name = "Ecom_application"
- 
- 
-conn_str = (
-    f"Driver={{SQL Server}};"
-    f"Server={server_name};"
-    f"Database={database_name};"
-    f"Trusted_Connection=yes;"
-)
-
-print(conn_str)
-conn = pyodbc.connect(conn_str)
-# cursor = conn.cursor()
-# cursor.execute("Select 1")
-# print("Database connection is successful")
 
 class CustomerNotFoundException(Exception):
     def __init__(self, customer_id):
@@ -92,10 +76,10 @@ class Cart:
 
 if __name__=='__main__':
    
-    customer_access=CustomerService(conn)
+    customer_access=CustomerService()
     cart_access=CartService()
-    order_access=OrderService(conn)
-    product_access=ProductService(conn)
+    order_access=OrderService()
+    product_access=ProductService()
 
     while True:
         print("""
@@ -154,6 +138,11 @@ if __name__=='__main__':
             order_access.getOrdersByCustomer(customer_id)
 
         elif choice==8:
+            cart_access.close()
+            order_access.close()
+            product_access.close()
+            customer_access.close()
+            print("Thank you for using our service🙏")
             break
         else:
             print("Wrong choice ❌")

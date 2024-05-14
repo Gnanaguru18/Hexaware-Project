@@ -1,10 +1,7 @@
 from tabulate import tabulate
 from datetime import date
-
-class OrderService:
-    def __init__(self,conn):
-        self.conn=conn
-        self.cursor=conn.cursor()
+from Utility.DBconn import DBconnection
+class OrderService(DBconnection):
 
     def placeOrder(self,customer_id, pq_list, shippingAddress):
         try:
@@ -41,9 +38,7 @@ class OrderService:
             print("Your order has been placed")
         except Exception as e:
             print(e)  
-        finally:
-            self.cursor.close()
-            self.conn.close()
+       
 
     def getOrdersByCustomer(self,customer_id):
         try:
@@ -61,6 +56,4 @@ class OrderService:
         
         except Exception as e:
             print(e)  
-        finally:
-            self.cursor.close()
-            self.conn.close()
+     
