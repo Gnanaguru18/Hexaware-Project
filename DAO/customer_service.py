@@ -1,12 +1,21 @@
 from tabulate import tabulate
+from MyException.customer_exception import CustomerNotFoundException
 from Utility.DBconn import DBconnection
+from abc import ABC,abstractmethod
 
-class CustomerNotFoundException(Exception):
-    def __init__(self, customer_id):
-       print(f"Customer with ID {customer_id} not found")
+class ICustomerService(ABC):
+    @abstractmethod
+    def display_customer(self):
+        pass
+
+    def create_customer(self,customer_name,customer_email,customer_password):
+        pass
+
+    def delete_customer(self,customer_id):
+        pass
 
 
-class CustomerService(DBconnection):
+class CustomerService(DBconnection,ICustomerService):
 
     def display_customer(self):
         try:
@@ -61,6 +70,6 @@ class CustomerService(DBconnection):
             if rows_deleted == 0:
                 raise CustomerNotFoundException(customer_id)
         except CustomerNotFoundException as e:
-            pass
+            print(e)
 
 

@@ -3,9 +3,7 @@ from datetime import date
 from tabulate import tabulate
 from DAO import CustomerService,OrderService,CartService,ProductService
 
-
-if __name__=='__main__':
-   
+def main():
     customer_access=CustomerService()
     cart_access=CartService()
     order_access=OrderService()
@@ -76,4 +74,10 @@ if __name__=='__main__':
             break
         else:
             print("Wrong choice ❌")
+
+
+if __name__=='__main__':
+    main()
+   
+
 

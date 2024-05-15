@@ -1,8 +1,7 @@
 from tabulate import tabulate
+from MyException.product_exception import ProductNotFoundException
 from Utility.DBconn import DBconnection
-class ProductNotFoundException(Exception):
-    def __init__(self, customer_id):
-       print(f"Customer with ID {customer_id} not found")
+
 
 
 class ProductService(DBconnection):
