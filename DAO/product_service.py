@@ -40,18 +40,18 @@ class ProductService(DBconnection,IProductService):
       
 
     def delete_product(self,product_id):
-        
-        rows_deleted = self.cursor.execute("""
-        delete from Order_items where product_id=?
-        delete from Cart_items where product_id=?
-        delete from Product where product_id=?
-        """,
-        (product_id,product_id,product_id)
-        ).rowcount
-        self.conn.commit()
         try: 
+            rows_deleted = self.cursor.execute("""
+            delete from Order_items where product_id=?
+            delete from Cart_items where product_id=?
+            delete from Product where product_id=?
+            """,
+            (product_id,product_id,product_id)
+            ).rowcount
+            self.conn.commit()
             if rows_deleted == 0:
-                raise ProductNotFoundException(product_id)
+                    raise ProductNotFoundException(product_id)
+            
         except ProductNotFoundException as e:
             print(e)
        
