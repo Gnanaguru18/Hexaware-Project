@@ -54,7 +54,7 @@ class OrderService(DBconnection,IOrderService):
             print(e)  
        
 
-    def getOrdersByCustomer(self,customer_id):
+    def seventhquestion(self,customer_id):
         try:
             self.cursor.execute(
                 """
@@ -74,3 +74,25 @@ class OrderService(DBconnection,IOrderService):
         except CustomerNotFoundException as e:
             print(e) 
      
+
+    def getOrdersByCustomer(self,customer_id):
+        try:
+            self.cursor.execute("""
+            select order_id from orders
+            where customer_id= ?
+            """,customer_id
+            )
+            order = self.cursor.fetchall()
+            order_list = [row[0] for row in order]
+            for i in order_list:
+                self.cursor.execute("""
+                select * from orders
+                where customer_id= ? and order_id =?
+                """,(customer_id,i)
+                )
+                sub_order = self.cursor.fetchall() 
+                headers = [column [0] for column in self.cursor.description]
+                print(tabulate (sub_order, headers=headers, tablefmt="psql"))
+
+        except CustomerNotFoundException as e:
+            print(e) 

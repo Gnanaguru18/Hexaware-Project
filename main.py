@@ -22,6 +22,7 @@ class EcomApp:
                 7. View Customer Order 
                 8. Exit""")
             choice=int(input("Enter choice:"))
+            
             if choice==1:
                 customer_name=input("Enter Name:")
                 customer_email=input("Enter Email:")

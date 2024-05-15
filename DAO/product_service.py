@@ -35,6 +35,7 @@ class ProductService(DBconnection,IProductService):
            self.cursor.execute( "insert into Product ( name, price, description, stock_quantity) values(?,?,?,?)",
                        (name,price,description,stock_quantity))
            self.conn.commit()
+    
         except Exception as e:
            print(e)
       
