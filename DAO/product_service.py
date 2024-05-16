@@ -25,8 +25,10 @@ class ProductService(DBconnection,IProductService):
            product = self.cursor.fetchall() # Get all data
            headers = [column [0] for column in self.cursor.description]
            print(tabulate (product, headers=headers, tablefmt="psql"))
+           return product
         except Exception as e:
            print(e)
+           return None
   
          
 

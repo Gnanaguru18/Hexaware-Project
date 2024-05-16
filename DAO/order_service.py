@@ -50,6 +50,7 @@ class OrderService(DBconnection,IOrderService):
             )
             self.conn.commit()
             print("Your order has been placed")
+            return True
         except Exception as e:
             print(e)  
        
