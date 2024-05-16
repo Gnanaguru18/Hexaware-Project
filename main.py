@@ -2,6 +2,7 @@ import pyodbc
 from datetime import date
 from tabulate import tabulate
 from DAO import CustomerService,OrderService,CartService,ProductService
+from MyException.customer_exception import CustomerNotFoundException
 
 class EcomApp:
     def main():
@@ -28,7 +29,7 @@ class EcomApp:
                 customer_email=input("Enter Email:")
                 customer_pass=input("Enter Password:")
                 customer_access.create_customer(customer_name,customer_email,customer_pass)
-                customer_access.display_customer()
+                
 
             elif choice==2:
                 product_name=input("Enter product name:")
@@ -36,6 +37,7 @@ class EcomApp:
                 description=input("Enter product description:")
                 stock_quantity=int(input("Enter product quantity:"))
                 product_access.createProduct(product_name,price,description,stock_quantity)
+                
 
             elif choice==3:
                 product_access.display_product()
@@ -45,16 +47,24 @@ class EcomApp:
             elif choice==4:
                 product_access.display_product()
                 customer_id=int(input("Enter customer ID:"))
+                if customer_access.check_customerid(customer_id)==0:
+                    continue
                 product_id=int(input("Enter product ID:"))
+                if product_access.check_productid(product_id)==0:
+                    continue
                 quantity=int(input("Enter quantity:"))
                 cart_access.add_to_cart(customer_id,product_id,quantity)
 
             elif choice==5:
                 customer_id=int(input("Enter customer ID:"))
+                if customer_access.check_customerid(customer_id)==0:
+                    continue
                 cart_access.getAllFromCart(customer_id)
 
             elif choice==6:
                 customer_id=int(input("Enter customer ID:"))
+                if customer_access.check_customerid(customer_id)==0:
+                    continue
                 pq = {}
                 num_entries = int(input("Enter the number of products you want to add: "))
                 for i in range(num_entries):
@@ -75,6 +85,7 @@ class EcomApp:
                 customer_access.close()
                 print("Thank you for using our service🙏")
                 break
+     
             else:
                 print("Wrong choice ❌")
 

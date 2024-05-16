@@ -35,24 +35,41 @@ class ProductService(DBconnection,IProductService):
            self.cursor.execute( "insert into Product ( name, price, description, stock_quantity) values(?,?,?,?)",
                        (name,price,description,stock_quantity))
            self.conn.commit()
+           print("Product created successfully.........")
+           return True
     
         except Exception as e:
            print(e)
       
 
     def delete_product(self,product_id):
-        try: 
-            rows_deleted = self.cursor.execute("""
-            delete from Order_items where product_id=?
-            delete from Cart_items where product_id=?
-            delete from Product where product_id=?
-            """,
-            (product_id,product_id,product_id)
-            ).rowcount
-            self.conn.commit()
+         
+        rows_deleted = self.cursor.execute("""
+        delete from Order_items where product_id=?
+        delete from Cart_items where product_id=?
+        delete from Product where product_id=?
+        """,
+        (product_id,product_id,product_id)
+        ).rowcount
+        self.conn.commit()
+        try:
             if rows_deleted == 0:
                     raise ProductNotFoundException(product_id)
             
         except ProductNotFoundException as e:
             print(e)
        
+
+    def check_productid(self,product_id):
+        self.cursor.execute("""
+        select product_id from Product
+        where product_id= ? """,(product_id)
+        )
+        row=self.cursor.fetchall()
+        product_list = [ro[0] for ro in row]
+        try:
+            if len(product_list)==0:
+                raise ProductNotFoundException(product_id)
+        except ProductNotFoundException as e:
+            print(e)
+            return len(product_list)

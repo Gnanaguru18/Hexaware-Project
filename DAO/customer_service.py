@@ -39,6 +39,7 @@ class CustomerService(DBconnection,ICustomerService):
                 (customer_name,customer_email,customer_password)
             )
             self.conn.commit()  
+            print("Customer registered successfully.....")
         except Exception as e:
             print(e)
   
@@ -75,3 +76,17 @@ class CustomerService(DBconnection,ICustomerService):
             print(e)
 
 
+    def check_customerid(self,customer_id):
+        self.cursor.execute("""
+        select customer_id from Customer
+        where customer_id= ? """,(customer_id)
+        )
+        row=self.cursor.fetchall()
+        order_list = [ro[0] for ro in row]
+        try:
+            if len(order_list)==0:
+                raise CustomerNotFoundException(customer_id)
+        except CustomerNotFoundException as e:
+            print(e)
+            return len(order_list)
+                            
