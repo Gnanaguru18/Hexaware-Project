@@ -76,6 +76,8 @@ class EcomApp:
 
             elif choice==7:
                 customer_id=int(input("Enter customer ID:"))
+                if customer_access.check_customerid(customer_id)==0:
+                    continue
                 order_access.getOrdersByCustomer(customer_id)
 
             elif choice==8:

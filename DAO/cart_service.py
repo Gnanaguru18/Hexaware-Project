@@ -26,6 +26,7 @@ class CartService(DBconnection):
             )
             self.conn.commit()
             print(f"Product with product ID {prod_id} has been added to your cart.........")
+            return True
         except Exception as e:
            print(e)
     
