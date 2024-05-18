@@ -11,18 +11,18 @@ class OrderService(DBconnection,IOrderService):
             today_date=str(date.today())
             self.cursor.execute(
             """
-            insert into orders (customer_id,order_date,shipping_address)
-            values (?,?,?)""",
-            (customer_id,today_date,shippingAddress)
+            insert into orders (customer_id, order_date, shipping_address)
+            values ( ?, ?, ?)""",
+            (customer_id, today_date, shippingAddress)
             
             )
             self.conn.commit()
         
             for i,j in pq_list.items():
                 self.cursor.execute("""
-                insert into Order_items (order_id,product_id,quantity)
-                values ((select max(order_id) from orders), ?,?)""",
-                (i,j)
+                insert into Order_items (order_id, product_id, quantity)
+                values ((select max(order_id) from orders), ?, ?)""",
+                ( i, j)
                 
                 )
                 self.conn.commit()
@@ -42,17 +42,55 @@ class OrderService(DBconnection,IOrderService):
             return True
         except Exception as e:
             print(e)  
-       
 
-    def seventhquestion(self,customer_id):
+    def placeorder_alternative(self, customer_id, shippingAddress):
+        try:
+            today_date=str(date.today())
+            self.cursor.execute(
+            """
+            declare @total int= ( select sum( c.quantity * p.price ) from Cart_items c
+                                inner join Product p on c.product_id = p.product_id
+                                where cart_id = ( select cart_id from Cart
+                                                where customer_id= ? ))
+
+            insert into orders (customer_id, order_date, total_price, shipping_address)
+            values ( ?, ?, @total, ?)""",
+            ( customer_id, customer_id, today_date, shippingAddress)
+            )
+            self.conn.commit()
+            
+            self.cursor.execute("""
+            select product_id,quantity from Cart_items
+            where cart_id = (select cart_id from Cart
+							where customer_id = ? )""", customer_id
+            ) 
+            order = self.cursor.fetchall()
+            for i in order:
+                self.cursor.execute("""
+                insert into Order_items (order_id, product_id, quantity)
+                values ((select max(order_id) from orders), ?, ?)""",
+                ( i[0], i[1])
+                )
+            self.conn.commit()
+            self.cursor.execute("""
+            delete from Cart_items
+            where cart_id = (select cart_id from Cart where customer_id= ? )""", customer_id
+            )
+            self.conn.commit()
+            print("Order placed successfully........")
+
+        except Exception as e:
+            print(e) 
+
+
+    def seventhquestion(self, customer_id):
         try:
             self.cursor.execute(
                 """
             select oi.product_id,p.name,oi.quantity from orders o inner join
             Order_items oi on o.order_id=oi.order_id inner join
             Product p on p.product_id=oi.product_id
-            where o.customer_id= ? """,
-                (customer_id)
+            where o.customer_id= ? """,customer_id
             )
             order = self.cursor.fetchall() 
             if not order:
@@ -65,7 +103,7 @@ class OrderService(DBconnection,IOrderService):
             print(e) 
      
 
-    def getOrdersByCustomer(self,customer_id):
+    def getOrdersByCustomer(self, customer_id):
         try:
             self.cursor.execute("""
             select order_id from orders
@@ -78,7 +116,7 @@ class OrderService(DBconnection,IOrderService):
                 self.cursor.execute("""
                 select * from orders
                 where customer_id= ? and order_id =?
-                """,(customer_id,i)
+                """,( customer_id, i)
                 )
                 sub_order = self.cursor.fetchall() 
                 headers = [column [0] for column in self.cursor.description]

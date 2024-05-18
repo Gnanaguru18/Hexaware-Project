@@ -79,6 +79,9 @@ class EcomApp:
                 if customer_access.check_customerid(customer_id)==0:
                     continue
                 order_access.getOrdersByCustomer(customer_id)
+            
+            elif choice == 9:
+                order_access.placeorder_alternative(10003,"sand village")
 
             elif choice==8:
                 cart_access.close()
