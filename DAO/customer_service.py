@@ -88,5 +88,6 @@ class CustomerService(DBconnection,ICustomerService):
                 raise CustomerNotFoundException(customer_id)
         except CustomerNotFoundException as e:
             print(e)
+        finally:
             return len(order_list)
                             

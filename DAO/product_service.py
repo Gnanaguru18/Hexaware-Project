@@ -74,4 +74,5 @@ class ProductService(DBconnection,IProductService):
                 raise ProductNotFoundException(product_id)
         except ProductNotFoundException as e:
             print(e)
+        finally:
             return len(product_list)
