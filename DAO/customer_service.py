@@ -1,21 +1,7 @@
 from tabulate import tabulate
 from MyException.customer_exception import CustomerNotFoundException
 from Utility.DBconn import DBconnection
-from abc import ABC,abstractmethod
-
-class ICustomerService(ABC):
-    @abstractmethod
-    def display_customer(self):
-        pass
-
-    @abstractmethod
-    def create_customer(self,customer_name,customer_email,customer_password):
-        pass
-
-    @abstractmethod
-    def delete_customer(self,customer_id):
-        pass
-
+from Interface import ICustomerService
 
 class CustomerService(DBconnection,ICustomerService):
 

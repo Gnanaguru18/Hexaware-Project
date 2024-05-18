@@ -1,22 +1,7 @@
 from tabulate import tabulate
 from MyException.product_exception import ProductNotFoundException
 from Utility.DBconn import DBconnection
-from abc import ABC,abstractmethod
-
-class IProductService(ABC):
-    
-    @abstractmethod
-    def display_product(self):
-        pass
-
-    @abstractmethod
-    def createProduct(self,name,price,description,stock_quantity):
-        pass
-
-    @abstractmethod
-    def delete_product(self,product_id):
-        pass
-
+from Interface import IProductService
 class ProductService(DBconnection,IProductService):
 
     def display_product(self):

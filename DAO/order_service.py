@@ -2,18 +2,7 @@ from tabulate import tabulate
 from datetime import date
 from MyException.customer_exception import CustomerNotFoundException
 from Utility.DBconn import DBconnection
-from abc import ABC,abstractmethod
-
-class IOrderService(ABC):
-
-    @abstractmethod
-    def placeOrder(self,customer_id, pq_list, shippingAddress):
-        pass
-
-    @abstractmethod
-    def getOrdersByCustomer(self,customer_id):
-        pass
-
+from Interface import IOrderService
 
 class OrderService(DBconnection,IOrderService):
 
