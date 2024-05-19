@@ -1,6 +1,6 @@
 from tabulate import tabulate
 from datetime import date
-from MyException.customer_exception import CustomerNotFoundException
+from MyException import CustomerNotFoundException,NoOrdersYetException
 from Utility.DBconn import DBconnection
 from Interface import IOrderService
 
@@ -111,6 +111,9 @@ class OrderService(DBconnection,IOrderService):
             """,customer_id
             )
             order = self.cursor.fetchall()
+            if len(order)==0:
+                raise NoOrdersYetException(customer_id)
+            
             order_list = [row[0] for row in order]
             for i in order_list:
                 self.cursor.execute("""
@@ -123,4 +126,7 @@ class OrderService(DBconnection,IOrderService):
                 print(tabulate (sub_order, headers=headers, tablefmt="psql"))
 
         except CustomerNotFoundException as e:
+            print(e) 
+            
+        except NoOrdersYetException as e:
             print(e) 

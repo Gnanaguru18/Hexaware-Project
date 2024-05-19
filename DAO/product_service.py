@@ -45,6 +45,9 @@ class ProductService(DBconnection,IProductService):
             
         except ProductNotFoundException as e:
             print(e)
+            
+        else:
+            print(f"Prouct with Product ID:{product_id} has been removed from database.......")
        
 
     def check_productid(self,product_id):

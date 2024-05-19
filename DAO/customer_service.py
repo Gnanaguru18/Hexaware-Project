@@ -25,7 +25,11 @@ class CustomerService(DBconnection,ICustomerService):
                 (customer_name,customer_email,customer_password)
             )
             self.conn.commit()  
-            print("Customer registered successfully.....")
+            self.cursor.execute(
+                "SELECT @@IDENTITY AS ID"
+            )  
+            last_id = self.cursor.fetchone()[0]
+            print(f"Customer registered successfully with Customer ID :{last_id}")
         except Exception as e:
             print(e)
   
