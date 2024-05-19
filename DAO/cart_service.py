@@ -1,7 +1,7 @@
 from tabulate import tabulate
 from Utility.DBconn import DBconnection
 from Interface import ICartService
-from MyException import NoProductInCart
+from MyException import NoProductInCart,OutOfStockException
 class CartService(DBconnection,ICartService):
 
     def Display_cart(self):
@@ -18,6 +18,17 @@ class CartService(DBconnection,ICartService):
         try:
             self.cursor.execute(
             """
+            select stock_quantity from Product
+            where product_id=?
+            """, prod_id
+            )
+            stock_quantity=self.cursor.fetchone()[0]
+
+            if stock_quantity-quantity<=-1:
+                raise OutOfStockException(prod_id,stock_quantity)
+
+            self.cursor.execute(
+            """
             declare @a int = (select cart_id from Cart
 					    where customer_id= ?);
 
@@ -28,7 +39,7 @@ class CartService(DBconnection,ICartService):
             self.conn.commit()
             print(f"Product with product ID {prod_id} has been added to your cart.........")
             return True
-        except Exception as e:
+        except OutOfStockException as e:
            print(e)
     
  

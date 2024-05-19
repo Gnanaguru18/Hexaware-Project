@@ -2,7 +2,6 @@ import pyodbc
 from datetime import date
 from tabulate import tabulate
 from DAO import CustomerService,OrderService,CartService,ProductService
-from MyException.customer_exception import CustomerNotFoundException
 
 class EcomApp:
     def main():
@@ -13,7 +12,7 @@ class EcomApp:
 
         while True:
             print("""
-                Choose 
+                Main Menu 
                 1. Register Customer. 
                 2. Create Product. 
                 3. Delete Product. 
