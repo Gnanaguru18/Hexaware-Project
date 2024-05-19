@@ -1,3 +1,4 @@
 from .customer_exception import CustomerNotFoundException
 from .order_exception import OrderNotFoundException,NoOrdersYetException
 from .product_exception import ProductNotFoundException
+from .cart_exception import NoProductInCart

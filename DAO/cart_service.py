@@ -1,6 +1,7 @@
 from tabulate import tabulate
 from Utility.DBconn import DBconnection
 from Interface import ICartService
+from MyException import NoProductInCart
 class CartService(DBconnection,ICartService):
 
     def display_cart(self):
@@ -61,9 +62,12 @@ class CartService(DBconnection,ICartService):
             (customer_id)
             )
             cart = self.cursor.fetchall() 
+            if len(cart)==0:
+                raise NoProductInCart(customer_id)
+            
             headers = [column [0] for column in self.cursor.description]
             print(tabulate (cart, headers=headers, tablefmt="psql"))
-        except Exception as e:
+        except NoProductInCart as e:
            print(e)
   
        

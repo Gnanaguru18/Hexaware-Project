@@ -65,14 +65,8 @@ class EcomApp:
                 customer_id=int(input("Enter customer ID:"))
                 if customer_access.check_customerid(customer_id)==0:
                     continue
-                pq = {}
-                num_entries = int(input("Enter the number of products you want to add: "))
-                for i in range(num_entries):
-                    product = input("Enter product ID: ")
-                    quantity = input("Enter quantity: ")
-                    pq.update({product: quantity})
                 shipping_address=input("Enter shipping address:")
-                order_access.placeOrder(customer_id,pq,shipping_address)
+                order_access.placeOrder(customer_id,shipping_address)
 
             elif choice==7:
                 customer_id=int(input("Enter customer ID:"))
