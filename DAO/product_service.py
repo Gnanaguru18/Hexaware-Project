@@ -17,7 +17,7 @@ class ProductService(DBconnection,IProductService):
   
          
 
-    def createProduct(self,name,price,description,stock_quantity):
+    def create_product(self,name,price,description,stock_quantity):
         try:
            self.cursor.execute( "insert into Product ( name, price, description, stock_quantity) values(?,?,?,?)",
                        (name,price,description,stock_quantity))

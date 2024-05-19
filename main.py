@@ -36,7 +36,7 @@ class EcomApp:
                 price=int(input("Enter product price:"))
                 description=input("Enter product description:")
                 stock_quantity=int(input("Enter product quantity:"))
-                product_access.createProduct(product_name,price,description,stock_quantity)
+                product_access.create_product(product_name,price,description,stock_quantity)
                 
 
             elif choice==3:
@@ -66,13 +66,13 @@ class EcomApp:
                 if customer_access.check_customerid(customer_id)==0:
                     continue
                 shipping_address=input("Enter shipping address:")
-                order_access.placeOrder(customer_id,shipping_address)
+                order_access.place_order(customer_id,shipping_address)
 
             elif choice==7:
                 customer_id=int(input("Enter customer ID:"))
                 if customer_access.check_customerid(customer_id)==0:
                     continue
-                order_access.getOrdersByCustomer(customer_id)
+                order_access.get_orders_by_customer(customer_id)
 
             elif choice==8:
                 cart_access.close()

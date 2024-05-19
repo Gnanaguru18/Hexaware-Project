@@ -6,7 +6,7 @@ from Interface import IOrderService
 
 class OrderService(DBconnection,IOrderService):
 
-    def placeOrder(self, customer_id, shippingAddress):
+    def place_order(self, customer_id, shippingAddress):
         try:
             today_date=str(date.today())
             self.cursor.execute(
@@ -47,12 +47,13 @@ class OrderService(DBconnection,IOrderService):
             )
             self.conn.commit()
             print("Order placed successfully........")
+            return True
 
         except Exception as e:
             print(e) 
 
 
-    def seventhquestion(self, customer_id):
+    def get_orders_by_customer_alternative(self, customer_id):
         try:
             self.cursor.execute(
                 """
@@ -72,7 +73,7 @@ class OrderService(DBconnection,IOrderService):
             print(e) 
      
 
-    def getOrdersByCustomer(self, customer_id):
+    def get_orders_by_customer(self, customer_id):
         try:
             self.cursor.execute("""
             select order_id from orders
