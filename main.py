@@ -28,7 +28,7 @@ class EcomApp:
                 customer_name=input("Enter Name:")
                 customer_email=input("Enter Email:")
                 customer_pass=input("Enter Password:")
-                customer_access.create_customer(customer_name,customer_email,customer_pass)
+                customer_access.Create_customer(customer_name,customer_email,customer_pass)
                 
 
             elif choice==2:
@@ -36,43 +36,43 @@ class EcomApp:
                 price=int(input("Enter product price:"))
                 description=input("Enter product description:")
                 stock_quantity=int(input("Enter product quantity:"))
-                product_access.create_product(product_name,price,description,stock_quantity)
+                product_access.Create_product(product_name,price,description,stock_quantity)
                 
 
             elif choice==3:
-                product_access.display_product()
+                product_access.Display_product()
                 product_id=int(input("Enter product ID:"))
-                product_access.delete_product(product_id)
+                product_access.Delete_product(product_id)
 
             elif choice==4:
-                product_access.display_product()
+                product_access.Display_product()
                 customer_id=int(input("Enter customer ID:"))
-                if customer_access.check_customerid(customer_id)==0:
+                if customer_access.Check_customerid(customer_id)==0:
                     continue
                 product_id=int(input("Enter product ID:"))
-                if product_access.check_productid(product_id)==0:
+                if product_access.Check_productid(product_id)==0:
                     continue
                 quantity=int(input("Enter quantity:"))
-                cart_access.add_to_cart(customer_id,product_id,quantity)
+                cart_access.Add_to_cart(customer_id,product_id,quantity)
 
             elif choice==5:
                 customer_id=int(input("Enter customer ID:"))
-                if customer_access.check_customerid(customer_id)==0:
+                if customer_access.Check_customerid(customer_id)==0:
                     continue
-                cart_access.getAllFromCart(customer_id)
+                cart_access.Get_all_from_cart(customer_id)
 
             elif choice==6:
                 customer_id=int(input("Enter customer ID:"))
-                if customer_access.check_customerid(customer_id)==0:
+                if customer_access.Check_customerid(customer_id)==0:
                     continue
                 shipping_address=input("Enter shipping address:")
-                order_access.place_order(customer_id,shipping_address)
+                order_access.Place_order(customer_id,shipping_address)
 
             elif choice==7:
                 customer_id=int(input("Enter customer ID:"))
-                if customer_access.check_customerid(customer_id)==0:
+                if customer_access.Check_customerid(customer_id)==0:
                     continue
-                order_access.get_orders_by_customer(customer_id)
+                order_access.Get_orders_by_customer(customer_id)
 
             elif choice==8:
                 cart_access.close()

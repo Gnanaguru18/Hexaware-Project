@@ -6,11 +6,10 @@ from Interface import IOrderService
 
 class OrderService(DBconnection,IOrderService):
 
-    def place_order(self, customer_id, shippingAddress):
+    def Place_order(self, customer_id, shippingAddress):
         try:
             today_date=str(date.today())
-            self.cursor.execute(
-            """
+            self.cursor.execute("""
             declare @total int= ( select sum( c.quantity * p.price ) from Cart_items c
                                 inner join Product p on c.product_id = p.product_id
                                 where cart_id = ( select cart_id from Cart
@@ -53,10 +52,9 @@ class OrderService(DBconnection,IOrderService):
             print(e) 
 
 
-    def get_orders_by_customer_alternative(self, customer_id):
+    def Get_orders_by_customer_alternative(self, customer_id):
         try:
-            self.cursor.execute(
-                """
+            self.cursor.execute("""
             select oi.product_id,p.name,oi.quantity from orders o inner join
             Order_items oi on o.order_id=oi.order_id inner join
             Product p on p.product_id=oi.product_id
@@ -73,7 +71,7 @@ class OrderService(DBconnection,IOrderService):
             print(e) 
      
 
-    def get_orders_by_customer(self, customer_id):
+    def Get_orders_by_customer(self, customer_id):
         try:
             self.cursor.execute("""
             select order_id from orders

@@ -14,7 +14,7 @@ class TestProductServiceModule(unittest.TestCase):
     def test_update_order(self):
         customer_id=10003
         shippingAddress='Leaf village'
-        Ordered_product = self.order_service.place_order(customer_id,shippingAddress)
+        Ordered_product = self.order_service.Place_order(customer_id,shippingAddress)
         self.assertTrue(Ordered_product)
 
 

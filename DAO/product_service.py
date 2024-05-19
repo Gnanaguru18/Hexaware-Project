@@ -4,7 +4,7 @@ from Utility.DBconn import DBconnection
 from Interface import IProductService
 class ProductService(DBconnection,IProductService):
 
-    def display_product(self):
+    def Display_product(self):
         try:
            self.cursor.execute("Select * from Product")
            product = self.cursor.fetchall() # Get all data
@@ -17,7 +17,7 @@ class ProductService(DBconnection,IProductService):
   
          
 
-    def create_product(self,name,price,description,stock_quantity):
+    def Create_product(self,name,price,description,stock_quantity):
         try:
            self.cursor.execute( "insert into Product ( name, price, description, stock_quantity) values(?,?,?,?)",
                        (name,price,description,stock_quantity))
@@ -29,7 +29,7 @@ class ProductService(DBconnection,IProductService):
            print(e)
       
 
-    def delete_product(self,product_id):
+    def Delete_product(self,product_id):
          
         rows_deleted = self.cursor.execute("""
         delete from Order_items where product_id=?
@@ -50,7 +50,7 @@ class ProductService(DBconnection,IProductService):
             print(f"Prouct with Product ID:{product_id} has been removed from database.......")
        
 
-    def check_productid(self,product_id):
+    def Check_productid(self,product_id):
         self.cursor.execute("""
         select product_id from Product
         where product_id= ? """,(product_id)

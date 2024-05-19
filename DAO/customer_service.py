@@ -5,7 +5,7 @@ from Interface import ICustomerService
 
 class CustomerService(DBconnection,ICustomerService):
 
-    def display_customer(self):
+    def Display_customer(self):
         try:
             self.cursor.execute("Select * from Customer")
             cust = self.cursor.fetchall() # Get all data
@@ -15,18 +15,18 @@ class CustomerService(DBconnection,ICustomerService):
             print(e)
 
 
-    def create_customer(self,customer_name,customer_email,customer_password):
+    def Create_customer(self,customer_name,customer_email,customer_password):
         try:
-            self.cursor.execute(
-                """INSERT INTO customer (name, email, password) VALUES ( ?, ?, ?)
-                declare @a int = (select max(customer_id) from customer)
-                insert into cart (customer_id)
-                values (@a)   """,
-                (customer_name,customer_email,customer_password)
+            self.cursor.execute("""
+            INSERT INTO customer (name, email, password) VALUES ( ?, ?, ?)
+            declare @a int = (select max(customer_id) from customer)
+            insert into cart (customer_id)
+            values (@a)   """,
+            (customer_name,customer_email,customer_password)
             )
             self.conn.commit()  
             self.cursor.execute(
-                "SELECT @@IDENTITY AS ID"
+            "SELECT @@IDENTITY AS ID"
             )  
             last_id = self.cursor.fetchone()[0]
             print(f"Customer registered successfully with Customer ID :{last_id}")
@@ -35,28 +35,27 @@ class CustomerService(DBconnection,ICustomerService):
   
             
 
-    def delete_customer(self,customer_id):
-        rows_deleted = self.cursor.execute(
-            """declare @a int = ?;
-                    delete from Order_items
-                    where order_id= (select order_id
-                                    from orders
-                                    where customer_id=@a)
-                    delete from orders
-                    where customer_id=@a
+    def Delete_customer(self,customer_id):
+        rows_deleted = self.cursor.execute("""
+        declare @a int = ?;
+        delete from Order_items
+        where order_id= (select order_id
+                        from orders
+                        where customer_id=@a)
+        delete from orders
+        where customer_id=@a
 
-                    delete from Cart_items
-                    where cart_id = (select cart_id
-                                    from Cart
-                                    where customer_id=@a)
+        delete from Cart_items
+        where cart_id = (select cart_id
+                        from Cart
+                        where customer_id=@a)
 
-                    delete from Cart
-                    where customer_id=@a
+        delete from Cart
+        where customer_id=@a
 
-                    delete from customer
-                    where customer_id= @a
-            """,
-            (customer_id)
+        delete from customer
+        where customer_id= @a """,
+        (customer_id)
         ).rowcount
         self.conn.commit()
         try: 
@@ -66,7 +65,7 @@ class CustomerService(DBconnection,ICustomerService):
             print(e)
 
 
-    def check_customerid(self,customer_id):
+    def Check_customerid(self,customer_id):
         self.cursor.execute("""
         select customer_id from Customer
         where customer_id= ? """,(customer_id)

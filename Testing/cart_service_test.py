@@ -15,7 +15,7 @@ class TestCartServiceModule(unittest.TestCase):
         customer_id=10004
         prod_id=20003
         quantity=5
-        added_product = self.cart_service.add_to_cart(customer_id,prod_id,quantity)
+        added_product = self.cart_service.Add_to_cart(customer_id,prod_id,quantity)
         self.assertTrue(added_product)
  
 

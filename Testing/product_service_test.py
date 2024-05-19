@@ -17,11 +17,11 @@ class TestProductServiceModule(unittest.TestCase):
         description='kalimark broom'
         stock_quantity=30
         #new_product = Product(name, price, description, stock_quantity)
-        created_product = self.product_service.create_product(name, price, description, stock_quantity)
+        created_product = self.product_service.Create_product(name, price, description, stock_quantity)
         self.assertTrue(created_product)
 
     def test_display_product(self):
-        product = self.product_service.display_product()
+        product = self.product_service.Display_product()
         self.assertIsNotNone(product)
         self.assertGreater(len(product), 0)   
 

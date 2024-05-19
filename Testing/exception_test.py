@@ -15,12 +15,12 @@ class TestException(unittest.TestCase):
 
     def test_customer_id(self):
         customer_id=10002
-        customer= self.customer_service.check_customerid(customer_id)
+        customer= self.customer_service.Check_customerid(customer_id)
         self.assertIsNotNone(customer)
 
     def test_product_id(self):
         product_id=20002
-        product= self.product_service.check_productid(product_id)
+        product= self.product_service.Check_productid(product_id)
         self.assertIsNotNone(product)
  
 
