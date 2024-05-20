@@ -1,6 +1,3 @@
-import pyodbc
-from datetime import date
-from tabulate import tabulate
 from DAO import CustomerService,OrderService,CartService,ProductService
 
 class EcomApp:
