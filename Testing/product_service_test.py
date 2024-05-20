@@ -12,10 +12,10 @@ class TestProductServiceModule(unittest.TestCase):
         self.product_service = ProductService()
 
     def test_add_product(self):
-        name='Holger'
-        price=50000
-        description='0.7mm rifle'
-        stock_quantity=10
+        name='Smart Watch'
+        price=2000
+        description='FireBoltt Amoled'
+        stock_quantity=15
         #new_product = Product(name, price, description, stock_quantity)
         created_product = self.product_service.Create_product(name, price, description, stock_quantity)
         self.assertTrue(created_product)
@@ -24,6 +24,14 @@ class TestProductServiceModule(unittest.TestCase):
         product = self.product_service.Display_product()
         self.assertIsNotNone(product)
         self.assertGreater(len(product), 0)   
+    
+    def tearDown(self):
+        try:
+            product_id = self.product_service.Get_productId("Smart Watch")
+            self.product_service.Delete_product(product_id)
+            print("Teardown Successfull")
+        except:
+            pass
 
 
 if __name__ == "__main__":

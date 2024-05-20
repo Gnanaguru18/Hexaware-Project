@@ -64,3 +64,11 @@ class ProductService(DBconnection,IProductService):
             print(e)
         finally:
             return len(product_list)
+        
+    def Get_productId(self,name):
+        self.cursor.execute("""
+        select product_id from Product
+        where name = ? """,name
+        )
+        product_id=self.cursor.fetchone()[0]
+        return product_id
