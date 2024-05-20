@@ -3,7 +3,7 @@ import sys
 sys.path.append('C:\Local Disk E\Hexaware\Hexaware Project')
 
 from DAO import CartService
-from Entity.cart import Cart
+from Entity import Cart
 
 
 class TestCartServiceModule(unittest.TestCase):

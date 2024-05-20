@@ -3,8 +3,7 @@ import sys
 sys.path.append('C:\Local Disk E\Hexaware\Hexaware Project')
 
 from DAO import CustomerService,ProductService
-from Entity.customer import Customer
-from Entity.product import Product
+from Entity import Customer,Product
 
 
 class TestException(unittest.TestCase):
